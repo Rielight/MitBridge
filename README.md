@@ -1,3 +1,12 @@
+---
+title: MitBridge
+emoji: 🌉
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+pinned: false
+---
+
 # DocScan API
 
 Computer Vision API untuk memindai dokumen tugas mahasiswa dari foto kamera HP.  
