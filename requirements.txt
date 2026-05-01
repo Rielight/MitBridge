@@ -1,0 +1,34 @@
+## --- Web & API Server ---
+#fastapi
+#uvicorn[standard]
+#python-multipart
+#
+## --- Image Processing & Augmentation ---
+#opencv-python
+#albumentations
+#pandas
+#numpy
+#
+## --- Model Training (Local/WSL) ---
+#torch
+#torchvision
+#ultralytics
+#scikit-learn
+#
+## --- CPU Inference (Cloud Target) ---
+#onnx
+#onnxruntime
+#
+## --- Experiment Tracking ---
+#wandb
+#tqdm
+
+# Web framework
+fastapi
+uvicorn[standard]
+python-multipart
+
+# Inference
+onnxruntime
+numpy
+opencv-python-headless

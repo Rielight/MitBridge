@@ -1,0 +1,21 @@
+# --- Keep these ---
+__pycache__
+*.pyc
+*.pyo
+.git
+.gitignore
+.env
+*.md
+tests/
+notebooks/
+dataset/
+runs/
+*.pt
+.vscode/
+.idea/
+
+# --- ADD THESE FOR OPTIMIZATION ---
+.venv/             # CRITICAL: This is the biggest folder in your screenshot
+.fastRequest/      # IDE junk
+app/__pycache__/   # Ignore cache inside your app folder too
+*.ipynb            # Ignore the heavy notebooks shown in your screenshot
