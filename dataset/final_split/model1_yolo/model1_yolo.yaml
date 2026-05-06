@@ -1,0 +1,7 @@
+path: /home/gradi/projects/MitBridge/dataset/final_split/model1_yolo
+train: images/train
+val: images/val
+test: images/test
+nc: 1
+names:
+  0: document

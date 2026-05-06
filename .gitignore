@@ -1,5 +1,5 @@
 # --- Large Data & Training Artifacts ---
-dataset/
+dataset/*
 !dataset/final_split/
 runs/
 *.pt

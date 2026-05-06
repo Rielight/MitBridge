@@ -1,0 +1,8 @@
+path: /home/gradi/projects/MitBridge/dataset/final_split/model2_clf
+train: train
+val: val
+test: test
+nc: 2
+names:
+  0: 0_readable
+  1: 1_unreadable
