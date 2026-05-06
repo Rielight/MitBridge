@@ -7,10 +7,10 @@ from tqdm import tqdm
 
 def get_exact_counts(total_items, ratios):
     """
-    Algoritma Largest Remainder Method.
-    Memastikan dataset terbagi dengan persentase presisi tanpa deficit/kelebihan.
+    Largest Remainder Method.
+    Memastikan dataset terbagi dengan persentase presisi tanpa kekurangan/kelebihan.
     """
-    assert round(sum(ratios), 5) == 1.0, "Total rasio harus persis 1.0"
+    assert round(sum(ratios), 5) == 1.0, "Total rasio harus 1.0"
 
     exact_floats = [total_items * r for r in ratios]
     counts = [int(e) for e in exact_floats]
@@ -31,12 +31,10 @@ def generate_yaml(yaml_path, yaml_data):
     with open(yaml_path, 'w') as f:
         yaml.dump(yaml_data, f, default_flow_style=False, sort_keys=False)
 
-# ==========================================
-# FUNGSI SPLIT MODEL 1 (YOLO)
-# ==========================================
+# Model 1
 def split_yolo_dataset(input_base, out_base, ratios):
     print("\n" + "="*40)
-    print("🚀 MEMULAI SPLIT MODEL 1 (YOLO OBB)")
+    print("SPLIT MODEL 1 (YOLO OBB)")
     print("="*40)
 
     splits = ["train", "val", "test"]
@@ -92,7 +90,6 @@ def split_yolo_dataset(input_base, out_base, ratios):
                     # COCO Negative: Buat file .txt kosong agar YOLO paham ini background
                     open(lbl_dst, 'w').close()
                 elif paths["type"] == "image_only":
-                    # SmartDoc: Untuk saat ini gambar saja (label OBB harus digenerate terpisah dari CSV nanti)
                     pass
 
         total_yolo += total_src
@@ -114,12 +111,10 @@ def split_yolo_dataset(input_base, out_base, ratios):
     generate_yaml(os.path.join(out_base, "model1_yolo.yaml"), yolo_yaml)
     print(f"\n-> YOLO Split Selesai! ({total_yolo} gambar)")
 
-# ==========================================
-# FUNGSI SPLIT MODEL 2 (CLASSIFICATION)
-# ==========================================
+# Model 2
 def split_clf_dataset(input_base, out_base, ratios):
     print("\n" + "="*40)
-    print("🚀 MEMULAI SPLIT MODEL 2 (CLASSIFICATION)")
+    print("SPLIT MODEL 2 (CLASSIFICATION)")
     print("="*40)
 
     splits = ["train", "val", "test"]
@@ -163,19 +158,15 @@ def split_clf_dataset(input_base, out_base, ratios):
     generate_yaml(os.path.join(out_base, "model2_clf.yaml"), clf_yaml)
     print(f"\n-> Classification Split Selesai! ({total_clf} gambar)")
 
-# ==========================================
-# MAIN EXECUTION
-# ==========================================
+# MAIN
 if __name__ == "__main__":
-    # Kunci Seed
+    # Reproducibility Setup
     random.seed(42)
 
-    # Direktori Asal (Dari hasil sampling & augmentasi)
     BASE_SAMPLED_DIR = "./dataset/sampling"
     YOLO_RAW_DIR = os.path.join(BASE_SAMPLED_DIR, "model1_yolo")
     CLF_RAW_DIR = os.path.join(BASE_SAMPLED_DIR, "model2_clf", "augmented")
 
-    # Direktori Final
     FINAL_DIR = "./dataset/final_split"
     YOLO_OUT_DIR = os.path.join(FINAL_DIR, "model1_yolo")
     CLF_OUT_DIR = os.path.join(FINAL_DIR, "model2_clf")
@@ -195,6 +186,5 @@ if __name__ == "__main__":
         print(f"Error: Folder input Classification tidak ditemukan di {CLF_RAW_DIR}")
 
     print("\n" + "#"*50)
-    print("🎉 SEMUA DATASET BERHASIL DI-SPLIT DAN SIAP DITRAINING!")
-    print(f"📁 Folder Output Final: {os.path.abspath(FINAL_DIR)}")
+    print(f"Folder Output Final: {os.path.abspath(FINAL_DIR)}")
     print("#"*50)

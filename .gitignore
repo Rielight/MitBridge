@@ -3,8 +3,7 @@ dataset/
 runs/
 *.pt
 *.ipynb
-# Note: If your production models are inside the /models folder, 
-# we keep that folder, but ignore the loose .pt files in the root.
+wandb/
 
 # --- Python & Environment ---
 .venv/

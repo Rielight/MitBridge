@@ -1,6 +1,8 @@
 import os
 import glob
 
+# PATCH LABELS (ADA CLASS ID YANG TIDAK SESUAI DAN KOORDINATNYA OOB)
+
 def fix_yolo_labels(labels_base_dir):
     print("Mengecek dan memperbaiki Class ID serta Koordinat Out-of-Bounds...")
 
@@ -18,14 +20,14 @@ def fix_yolo_labels(labels_base_dir):
         for line in lines:
             parts = line.strip().split()
             if len(parts) > 0:
-                # 1. Paksa Class ID menjadi 0
+                # Paksa Class ID menjadi 0
                 if parts[0] != '0':
                     parts[0] = '0'
                     needs_modification = True
 
                 new_parts = [parts[0]]
 
-                # 2. Clamping koordinat: Jika > 1.0 jadi 1.0, jika < 0.0 jadi 0.0
+                # Clamping koordinat: Jika > 1.0 jadi 1.0, jika < 0.0 jadi 0.0
                 for val_str in parts[1:]:
                     val = float(val_str)
 
@@ -50,7 +52,7 @@ def fix_yolo_labels(labels_base_dir):
                 f.writelines(new_lines)
             modified_count += 1
 
-    print(f"✅ Selesai! Berhasil memperbaiki (Class & Clamping) pada {modified_count} file label.")
+    print(f"Berhasil memperbaiki {modified_count} file label.")
 
 if __name__ == "__main__":
     FINAL_LABELS_DIR = "./dataset/final_split/model1_yolo/labels"

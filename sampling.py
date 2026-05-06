@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 
 def setup_directories(base_dir):
-    """Membuat struktur direktori yang sangat rapi untuk identifikasi."""
+    """Membuat struktur direktori untuk identifikasi."""
     dirs = [
         f"{base_dir}/model1_yolo/roboflow/images",
         f"{base_dir}/model1_yolo/roboflow/labels",
@@ -62,18 +62,18 @@ def sample_smartdoc2015(raw_path, out_path, num_samples):
         if not os.path.exists(src_img_path):
             continue
 
-        # 1. Baca gambar untuk mendapatkan dimensi aslinya
+        # Baca gambar untuk mendapatkan dimensi aslinya
         img = cv2.imread(src_img_path)
         if img is None:
             continue
         h, w = img.shape[:2]
 
-        # 2. Copy gambar ke folder output
+        # Copy gambar ke folder output
         dst_name = rel_path.replace('/', '_') # Flatten nama agar tidak masuk subfolder
         dst_img_path = os.path.join(out_path, 'images', dst_name)
         shutil.copy(src_img_path, dst_img_path)
 
-        # 3. Ekstrak koordinat (Pastikan urutannya: Top-Left, Top-Right, Bottom-Right, Bottom-Left)
+        # 3. Ekstrak koordinat (urutannya: Top-Left, Top-Right, Bottom-Right, Bottom-Left)
         # Sesuai standar YOLO OBB.
         pts = [
             (row['tl_x'], row['tl_y']),
@@ -104,7 +104,7 @@ def sample_smartdoc2015(raw_path, out_path, num_samples):
 
     # Simpan CSV referensi
     sampled_df.to_csv(os.path.join(out_path, 'sampled_metadata.csv'), index=False)
-    print(f"  -> Selesai! Berhasil memproses dan men-generate label untuk {success_count} gambar SmartDoc.")
+    print(f"Berhasil memproses dan generate label untuk {success_count} gambar SmartDoc.")
 
 def order_points(pts):
     """Mengurutkan 4 titik koordinat: [Top-Left, Top-Right, Bottom-Right, Bottom-Left]"""
@@ -121,13 +121,12 @@ def is_readable_heuristic(img, min_size=150, blur_threshold=200.0, edge_density_
     """
     Screener OpenCV untuk memastikan gambar dokumen layak (readable).
 
-    PERUBAHAN dari versi sebelumnya:
-    - blur_threshold: 100 -> 200 (lebih ketat, tolak gambar blurry)
-    - edge_density_threshold: 0.02 -> 0.03 (lebih ketat, tolak kertas kosong/minim teks)
+    - blur_threshold: 200 (untuk memastikan gambar tidak blur)
+    - edge_density_threshold: 0.03 (untuk memastikan kertas tidak kosong/minim teks)
     """
     h, w = img.shape[:2]
 
-    # 1. Filter Ukuran: Terlalu kecil = tidak terbaca
+    # Filter Ukuran: Terlalu kecil = tidak terbaca
     if h < min_size or w < min_size:
         return False
 
@@ -141,15 +140,13 @@ def is_readable_heuristic(img, min_size=150, blur_threshold=200.0, edge_density_
     if mean_brightness < 40 or mean_brightness > 230:
         return False
 
-    # 2. Filter Blur (Laplacian Variance)
-    # Semakin tinggi nilainya, semakin tajam gambarnya.
+    # Filter Blur (Laplacian Variance)
     blurred_for_lap = cv2.GaussianBlur(gray, (3, 3), 0)
     lap_var = cv2.Laplacian(blurred_for_lap, cv2.CV_64F).var()
     if lap_var < blur_threshold:
         return False
 
-    # 3. Filter Kertas Kosong (Edge Density)
-    # Mencari jumlah pixel yang merupakan tepian tulisan/objek
+    # Filter Kertas Kosong (Edge Density)
     edges = cv2.Canny(gray, 75, 150)
     edge_density = np.count_nonzero(edges) / (h * w)
 
@@ -159,7 +156,7 @@ def is_readable_heuristic(img, min_size=150, blur_threshold=200.0, edge_density_
     return True
 
 def sample_and_crop_roboflow_model2(raw_path, out_path, num_samples):
-    print(f"Sampling & Cropping Roboflow (Model 2 Base): {num_samples} images...")
+    print(f"Sampling & Cropping Roboflow (Model 2): {num_samples} images...")
 
     all_images = []
     for split in ['train', 'valid', 'test']:
@@ -221,7 +218,7 @@ def sample_and_crop_roboflow_model2(raw_path, out_path, num_samples):
             M = cv2.getPerspectiveTransform(rect_pts, dst_pts)
             crop_img = cv2.warpPerspective(img, M, (maxWidth, maxHeight))
 
-            # --- SCREENING PROCESS ---
+            # Screening
             if is_readable_heuristic(crop_img):
                 base_name = os.path.splitext(os.path.basename(img_path))[0]
                 save_name = f"{base_name}_crop_{idx}.jpg"
@@ -232,27 +229,28 @@ def sample_and_crop_roboflow_model2(raw_path, out_path, num_samples):
             else:
                 rejected_count += 1
 
-    print(f"  -> Selesai! Berhasil memotong {crop_count} gambar bersih.")
-    print(f"  -> Ditolak oleh Screener: {rejected_count} gambar (blur/kosong/terlalu kecil).")
+    print(f"Berhasil memotong {crop_count} gambar.")
+    print(f"Ditolak oleh Screener: {rejected_count} gambar.")
 
 def main():
-    # KETENTUAN 1: REPRODUCIBLE
+    # Reproducibility Setup
     random.seed(42)
 
     RAW_DIR = "./dataset/raw"
     OUT_DIR = "./dataset/sampling"
     setup_directories(OUT_DIR)
 
-    # KETENTUAN 2: Nilai DEFAULT OPTIMAL
+    # Sampling
     try:
+        # Model 1
         sample_roboflow_model1(f"{RAW_DIR}/roboflow_document_segmentation", f"{OUT_DIR}/model1_yolo/roboflow", num_samples=2000)
         sample_smartdoc2015(f"{RAW_DIR}/SmartDoc-2015", f"{OUT_DIR}/model1_yolo/smartdoc2015", num_samples=2500)
         sample_coco(f"{RAW_DIR}/COCO", f"{OUT_DIR}/model1_yolo/coco_negative", num_samples=600)
 
-        # Eksekusi fungsi baru untuk Model 2
+        # Model 2
         sample_and_crop_roboflow_model2(f"{RAW_DIR}/roboflow_document_segmentation", f"{OUT_DIR}/model2_clf/base_crops", num_samples=1500)
 
-        print("\nKeseluruhan Sampling Selesai!")
+        print("\nSampling Selesai")
     except Exception as e:
         print(f"Terjadi error saat proses: {e}")
 
