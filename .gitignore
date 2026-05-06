@@ -2,7 +2,6 @@
 dataset/
 runs/
 *.pt
-*.ipynb
 wandb/
 
 # --- Python & Environment ---

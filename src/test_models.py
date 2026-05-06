@@ -16,13 +16,13 @@ import cv2
 import onnxruntime as ort
 
 # ── Config ──────────────────────────────────────────────────────────────
-DETECTOR_PATH = "models/document_detector.onnx"
-CLASSIFIER_PATH = "models/readability_classifier.onnx"
+DETECTOR_PATH = "../models/document_detector.onnx"
+CLASSIFIER_PATH = "../models/readability_classifier.onnx"
 
-YOLO_TEST_DIR = "dataset/final_split/model1_yolo/images/test"
+YOLO_TEST_DIR = "../dataset/final_split/model1_yolo/images/test"
 CLF_READABLE_DIR = "dataset/final_split/model2_classification/train/0_readable"
 CLF_UNREADABLE_DIR = "dataset/final_split/model2_classification/train/1_unreadable"
-COCO_DIR = "dataset/sampling/model1_yolo/coco_negative"
+COCO_DIR = "../dataset/sampling/model1_yolo/coco_negative"
 
 IMAGENET_MEAN = np.array([0.485, 0.456, 0.406], dtype=np.float32)
 IMAGENET_STD = np.array([0.229, 0.224, 0.225], dtype=np.float32)

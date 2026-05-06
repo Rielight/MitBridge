@@ -236,8 +236,8 @@ def main():
     # Reproducibility Setup
     random.seed(42)
 
-    RAW_DIR = "./dataset/raw"
-    OUT_DIR = "./dataset/sampling"
+    RAW_DIR = "../dataset/raw"
+    OUT_DIR = "../dataset/sampling"
     setup_directories(OUT_DIR)
 
     # Sampling

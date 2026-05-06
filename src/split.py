@@ -163,11 +163,11 @@ if __name__ == "__main__":
     # Reproducibility Setup
     random.seed(42)
 
-    BASE_SAMPLED_DIR = "./dataset/sampling"
+    BASE_SAMPLED_DIR = "../dataset/sampling"
     YOLO_RAW_DIR = os.path.join(BASE_SAMPLED_DIR, "model1_yolo")
     CLF_RAW_DIR = os.path.join(BASE_SAMPLED_DIR, "model2_clf", "augmented")
 
-    FINAL_DIR = "./dataset/final_split"
+    FINAL_DIR = "../dataset/final_split"
     YOLO_OUT_DIR = os.path.join(FINAL_DIR, "model1_yolo")
     CLF_OUT_DIR = os.path.join(FINAL_DIR, "model2_clf")
 

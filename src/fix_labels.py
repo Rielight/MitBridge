@@ -55,7 +55,7 @@ def fix_yolo_labels(labels_base_dir):
     print(f"Berhasil memperbaiki {modified_count} file label.")
 
 if __name__ == "__main__":
-    FINAL_LABELS_DIR = "./dataset/final_split/model1_yolo/labels"
+    FINAL_LABELS_DIR = "../dataset/final_split/model1_yolo/labels"
 
     if os.path.exists(FINAL_LABELS_DIR):
         fix_yolo_labels(FINAL_LABELS_DIR)
