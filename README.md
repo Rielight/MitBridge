@@ -99,8 +99,8 @@ Endpoint utama untuk mengunggah foto kamera dan menerima hasil pemindaian.
 
 ```bash
 # Contoh request dengan curl
-curl -X POST http://localhost:8000/scan \
-     -F "file=@photo.jpg" \
+curl -X POST https://gradienr-mitbridge.hf.space/scan
+     -F "file=@photo.jpg"
      -o result.jpg -D -
 ```
 
@@ -133,6 +133,11 @@ curl -X POST http://localhost:8000/scan \
 ### `GET /health`
 
 Endpoint untuk pengecekan *liveness* dan kesiapan model.
+
+```bash
+# Contoh request dengan curl
+curl -X GET https://gradienr-mitbridge.hf.space/health
+```
 
 ```json
 {
