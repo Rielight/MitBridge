@@ -23,9 +23,9 @@ Solusi ini menggunakan pipeline Machine Learning dua tahap:
 ## Arsitektur Pipeline
 
 ```text
-Camera Photo (JPEG/PNG)
-    │
-    ▼
+    Camera Photo (JPEG/PNG)
+                │
+                ▼
 ┌─────────────────────────────────┐
 │  Model 1: YOLO11n-OBB           │   ← Detect document location
 │  Input:  640×640 (letterbox)    │      via Oriented Bounding Box
