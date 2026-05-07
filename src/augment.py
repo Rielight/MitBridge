@@ -97,8 +97,8 @@ def run_augmentation_and_preprocess(input_dir, output_base):
     print(f"Kelas 1_unreadable: {len(os.listdir(unread_dir))} images")
 
 if __name__ == "__main__":
-    BASE_CROP_DIR = "./dataset/sampling/model2_clf/base_crops"
-    AUG_OUTPUT_DIR = "./dataset/sampling/model2_clf/augmented"
+    BASE_CROP_DIR = "../dataset/sampling/model2_clf/base_crops"
+    AUG_OUTPUT_DIR = "../dataset/sampling/model2_clf/augmented"
 
     if os.path.exists(BASE_CROP_DIR) and len(os.listdir(BASE_CROP_DIR)) > 0:
         run_augmentation_and_preprocess(BASE_CROP_DIR, AUG_OUTPUT_DIR)
